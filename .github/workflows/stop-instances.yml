@@ -39,11 +39,21 @@ jobs:
         run: |
           aws fis create-experiment-template --cli-input-json file://fis-templates/stop-instances-template-processed.json
 
+      - name: Retrieve or Set TEMPLATE_ID
+        run: |
+          if [ "${{ steps.check_template.outputs.template_id }}" == "not_found" ]; then
+            TEMPLATE_ID=$(aws fis list-experiment-templates --query "experimentTemplates[?description=='Experiment to stop EC2 instances'].id" --output text)
+          else
+            TEMPLATE_ID=${{ steps.check_template.outputs.template_id }}
+          fi
+          echo "TEMPLATE_ID=$TEMPLATE_ID" >> $GITHUB_ENV
+
       - name: Start FIS Experiment
         run: |
-          TEMPLATE_ID=${{ steps.check_template.outputs.template_id }}
+          TEMPLATE_ID=${{ env.TEMPLATE_ID }}
           if [ -z "$TEMPLATE_ID" ]; then
-            TEMPLATE_ID=$(aws fis list-experiment-templates --query "experimentTemplates[?description=='Experiment to stop EC2 instances'].id" --output text)
+            echo "Error: TEMPLATE_ID is not set"
+            exit 1
           fi
           aws fis start-experiment --experiment-template-id $TEMPLATE_ID
           sleep 600 # Wait for 10 minutes to let the experiment complete
