@@ -21,6 +21,6 @@ jobs:
       - name: Check if FIS Experiment Template Exists
         id: check_template
         run: |
-          TEMPLATE_ID=$(aws fis list-experiment-templates --query "experimentTemplates[?description=='Experiment to stop EC2 instances'].id" --output text)
+          TEMPLATE_ID=$(aws fis list-experiment-templates --query "experimentTemplates[?description=='Stop EC2 instance to simulate impairment'].id" --output text)
           echo Template ID: $TEMPLATE_ID
-          echo "::set-output name=template_id::$TEMPLATE_ID"
+          echo "template_id=$TEMPLATE_ID" >> $GITHUB_ENV
