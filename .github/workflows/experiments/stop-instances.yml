@@ -1,0 +1,26 @@
+name: Stop Instances Experiment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  stop-instances:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Check if FIS Experiment Template Exists
+        id: check_template
+        run: |
+          TEMPLATE_ID=$(aws fis list-experiment-templates --query "experimentTemplates[?description=='Experiment to stop EC2 instances'].id" --output text)
+          echo Template ID: $TEMPLATE_ID
+          echo "::set-output name=template_id::$TEMPLATE_ID"
