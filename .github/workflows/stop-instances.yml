@@ -37,4 +37,4 @@ jobs:
       - name: Create FIS Experiment Template for Stop Instances
         if: steps.check_template.outputs.template_id == ''
         run: |
-          aws fis create-experiment-template --cli-input-json file://fis-templates/fis-stop-instances-template-processed.json
+          aws fis create-experiment-template --cli-input-json file://fis-templates/stop-instances-template-processed.json
