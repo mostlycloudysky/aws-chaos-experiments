@@ -41,6 +41,8 @@ jobs:
 
       - name: Start FIS Experiment
         run: |
+          echo "Checking if the experiment template exists..."
+          echo "Template ID: ${{ steps.check_template.outputs.template_id }}"
           TEMPLATE_ID=${{ steps.check_template.outputs.template_id }}
           if [ -z "$TEMPLATE_ID" ]; then
             TEMPLATE_ID=$(aws fis list-experiment-templates --query "experimentTemplates[?description=='Experiment to stop EC2 instances'].id" --output text)
