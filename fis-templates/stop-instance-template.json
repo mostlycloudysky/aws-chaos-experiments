@@ -20,7 +20,9 @@
     }
   },
   "roleArn": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${IAM_ROLE}",
-  "stopConditions": {
+  "stopConditions": [
+    {
     "source": "none"
-  }
+    }
+  ]
 }
