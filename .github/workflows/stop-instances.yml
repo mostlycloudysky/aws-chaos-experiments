@@ -38,3 +38,12 @@ jobs:
         if: steps.check_template.outputs.template_id == ''
         run: |
           aws fis create-experiment-template --cli-input-json file://fis-templates/stop-instances-template-processed.json
+
+      - name: Start FIS Experiment
+        run: |
+          TEMPLATE_ID=${{ steps.check_template.outputs.template_id }}
+          if [ -z "$TEMPLATE_ID" ]; then
+            TEMPLATE_ID=$(aws fis list-experiment-templates --query "experimentTemplates[?description=='Experiment to stop EC2 instances'].id" --output text)
+          fi
+          aws fis start-experiment --experiment-template-id $TEMPLATE_ID
+          sleep 600 # Wait for 10 minutes to let the experiment complete
