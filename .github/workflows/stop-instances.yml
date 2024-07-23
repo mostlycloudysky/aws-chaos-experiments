@@ -55,3 +55,10 @@ jobs:
           echo "Starting FIS experiment with TEMPLATE_ID: $TEMPLATE_ID"
           aws fis start-experiment --experiment-template-id $TEMPLATE_ID
           sleep 600 # Wait for 10 minutes to let the experiment complete
+
+      - name: Detect Issues
+        run: python scripts/detect_issues.py
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          GITHUB_REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
