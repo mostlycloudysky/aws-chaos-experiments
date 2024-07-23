@@ -18,34 +18,40 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Check if FIS Experiment Template Exists
-        id: check_template
+      - name: Retrieve the latest FIS Experiment Template ID
+        id: get_template_id
         run: |
-          TEMPLATE_ID=$(aws fis list-experiment-templates --query "experimentTemplates[?description=='Experiment to stop EC2 instances'].id" --output text)
-          echo Template ID: $TEMPLATE_ID
-          echo "template_id=$TEMPLATE_ID" >> $GITHUB_ENV
+          TEMPLATE_ID=$(aws fis list-experiment-templates --query "experimentTemplates[?description=='Experiment to stop EC2 instances'] | sort_by(@, &creationTime)[-1].id" --output text)
+          if [ -z "$TEMPLATE_ID" ]; then
+            echo "No existing template found. Creating a new one."
+            echo "template_id=new" >> $GITHUB_OUTPUT
+          else
+            echo "Using existing template: $TEMPLATE_ID"
+            echo "template_id=$TEMPLATE_ID" >> $GITHUB_OUTPUT
+          fi
 
       - name: Replace placeholders in FIS template
-        if: steps.check_template.outputs.template_id == ''
+        if: steps.get_template_id.outputs.template_id == 'new'
         run: |
           sed -e "s/\${AWS_REGION}/${{ secrets.AWS_REGION }}/g" \
               -e "s/\${AWS_ACCOUNT_ID}/${{ secrets.AWS_ACCOUNT_ID }}/g" \
               -e "s/\${INSTANCE_ID}/${{ secrets.INSTANCE_ID }}/g" \
               -e "s/\${IAM_ROLE}/${{ secrets.IAM_ROLE }}/g" \
-              fis-templates/stop-instance-template.json > fis-templates/stop-instances-template-processed.json
+              fis-templates/fis-stop-instances-template.json > fis-templates/fis-stop-instances-template-processed.json
 
       - name: Create FIS Experiment Template for Stop Instances
-        if: steps.check_template.outputs.template_id == ''
+        if: steps.get_template_id.outputs.template_id == 'new'
         run: |
-          aws fis create-experiment-template --cli-input-json file://fis-templates/stop-instances-template-processed.json
+          TEMPLATE_ID=$(aws fis create-experiment-template --cli-input-json file://fis-templates/fis-stop-instances-template-processed.json --query 'experimentTemplate.id' --output text)
+          echo "Created new template: $TEMPLATE_ID"
+          echo "template_id=$TEMPLATE_ID" >> $GITHUB_OUTPUT
 
       - name: Start FIS Experiment
         run: |
-          echo "Checking if the experiment template exists..."
-          echo "Template ID: ${{ steps.check_template.outputs.template_id }}"
-          TEMPLATE_ID=${{ steps.check_template.outputs.template_id }}
-          if [ -z "$TEMPLATE_ID" ]; then
-            TEMPLATE_ID=$(aws fis list-experiment-templates --query "experimentTemplates[?description=='Experiment to stop EC2 instances'].id" --output text)
+          TEMPLATE_ID=${{ steps.get_template_id.outputs.template_id }}
+          if [ "$TEMPLATE_ID" == "new" ]; then
+            TEMPLATE_ID=$(aws fis create-experiment-template --cli-input-json file://fis-templates/fis-stop-instances-template-processed.json --query 'experimentTemplate.id' --output text)
           fi
+          echo "Starting FIS experiment with TEMPLATE_ID: $TEMPLATE_ID"
           aws fis start-experiment --experiment-template-id $TEMPLATE_ID
           sleep 600 # Wait for 10 minutes to let the experiment complete
