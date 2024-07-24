@@ -3,6 +3,9 @@ name: Stop Instances Experiment
 on:
   workflow_dispatch:
 
+permissions:
+  issues: write
+
 jobs:
   stop-instances:
     runs-on: ubuntu-latest
