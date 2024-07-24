@@ -6,11 +6,13 @@ import requests
 def detect_issues():
     print("Detecting issues...")
     ec2 = boto3.client("ec2", region_name=os.getenv("AWS_REGION"))
-    response = ec2.describe_instance_status(
+    response = ec2.describe_instances(
         Filters=[{"Name": "instance-state-name", "Values": ["stopped"]}]
     )
-    # Get the instance IDs
-    instance_ids = [instance["InstanceId"] for instance in response["InstanceStatuses"]]
+    instance_ids = []
+    for reservation in response["Reservations"]:
+        for instance in reservation["Instances"]:
+            instance_ids.append(instance["InstanceId"])
 
     if not instance_ids:
         print("No issues detected.")
