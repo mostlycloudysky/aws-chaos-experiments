@@ -1,6 +1,7 @@
 import os
 import boto3
 import re
+import requests
 
 
 def start_instance(instance_id):
@@ -18,6 +19,21 @@ def parse_issue_body(issue_body):
         raise ValueError("Instance ID not found in issue body...")
 
 
+def reopen_issue():
+    repo = os.getenv("GITHUB_REPO")
+    issue_number = os.getenv("GITHUB_ISSUE_NUMBER")
+    token = os.getenv("GITHUB_TOKEN")
+    url = f"https://api.github.com/repos/{repo}/issues/{issue_number}"
+    headers = {"Authorization": f"token {token}"}
+    data = {"state": "open"}
+
+    response = requests.patch(url, headers=headers, json=data)
+    if response.status_code == 200:
+        print(f"Issue #{issue_number} reopened successfully.")
+    else:
+        print(f"Failed to reopen issue #{issue_number}: {response.text}")
+
+
 def remediate():
     issue_body = os.getenv("ISSUE_BODY")
     try:
@@ -26,6 +42,7 @@ def remediate():
         start_instance(instance_id)
     except Exception as e:
         print(f"Error during remediation: {e}")
+        reopen_issue()
 
 
 if __name__ == "__main__":
