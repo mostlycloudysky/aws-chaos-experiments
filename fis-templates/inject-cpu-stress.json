@@ -16,7 +16,7 @@
       "parameters": {
         "documentVersion": "$LATEST",
         "duration": "PT10M",
-        "documentArn": "arn:aws:ssm:${AWS_REGION}::document/AWS-RunShellScript",
+        "documentArn": "arn:aws:ssm:${AWS_REGION}::document/AWS-RunPowerShellScript",
          "documentParameters": "{\"commands\":[\"for ($i=0; $i -lt 8; $i++) {Start-Job -ScriptBlock {while ($true) {}}}\", \"Start-Sleep -Seconds 600\", \"Get-Job | Stop-Job\"]}"
       },
       "targets": {
