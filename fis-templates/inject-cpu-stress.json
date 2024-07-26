@@ -23,7 +23,7 @@
         "Instances": "TargetInstances"
       },
       "startAfter": [],
-      "duration": "PT10M"
+      "endAfter": "PT10M"
     }
   },
   "stopConditions": [
