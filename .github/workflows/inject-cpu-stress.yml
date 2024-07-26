@@ -32,7 +32,7 @@ jobs:
         id: get_template_id
         run: |
           TEMPLATE_ID=$(aws fis list-experiment-templates --query "experimentTemplates[?description=='Experiment to inject CPU stress on EC2 instances'] | sort_by(@, &creationTime)[-1].id" --output text)
-          if [ -z "$TEMPLATE_ID" ]; then
+          if [ -z "$TEMPLATE_ID" ] || [ "$TEMPLATE_ID" == "None" ]; then
             echo "No existing template found. Creating a new one."
             echo "template_id=new" >> $GITHUB_OUTPUT
           else
