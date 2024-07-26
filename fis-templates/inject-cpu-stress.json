@@ -3,6 +3,7 @@
   "targets": {
     "TargetInstances": {
       "resourceType": "aws:ec2:instance",
+      "selectionMode": "ALL",
       "resourceArns": [
         "arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:instance/${INSTANCE_ID}"
       ]
