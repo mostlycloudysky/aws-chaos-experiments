@@ -16,9 +16,7 @@
       "parameters": {
         "documentName": "AWS-RunShellScript",
         "documentVersion": "$LATEST",
-        "parameters": {
-          "commands": ["stress --cpu 8 --timeout 600"]
-        }
+        "parameters": "{\"commands\":[\"stress --cpu 8 --timeout 600\"]}"
       },
       "targets": {
         "Instances": "TargetInstances"
