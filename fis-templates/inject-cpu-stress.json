@@ -16,6 +16,7 @@
       "parameters": {
         "documentName": "AWS-RunShellScript",
         "documentVersion": "$LATEST",
+        "documentArn": "arn:aws:ssm:${AWS_REGION}::document/AWS-RunShellScript",
         "parameters": "{\"commands\":[\"stress --cpu 8 --timeout 600\"]}"
       },
       "targets": {
