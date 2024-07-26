@@ -17,9 +17,7 @@
         "documentVersion": "$LATEST",
         "duration": "PT10M",
         "documentArn": "arn:aws:ssm:${AWS_REGION}::document/AWS-RunShellScript",
-        "documentParameters": {
-          "commands": ["stress --cpu 8 --timeout 600"]
-        }
+        "documentParameters": "{\"commands\":[\"stress --cpu 8 --timeout 600\"]}"
       },
       "targets": {
         "Instances": "TargetInstances"
