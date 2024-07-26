@@ -5,37 +5,26 @@ from datetime import datetime, timedelta
 
 
 def detect_cpu_stress():
-    print("Checking CPU stress issues...")
-    ec2 = boto3.client("ec2", region_name=os.environ["AWS_REGION"])
-    cloud_watch = boto3.client("cloudwatch", region_name=os.environ["AWS_REGION"])
+    print("Detecting CPU stress issues...")
+    cloudwatch = boto3.client("cloudwatch", region_name=os.getenv("AWS_REGION"))
 
-    instance_ids = []
-    reservations = ec2.describe_instances()
-    for reseveration in reservations["Reservations"]:
-        for instance in reseveration["Instances"]:
-            instance_ids.append(instance["InstanceId"])
+    alarm_name = os.getenv("CLOUDWATCH_ALARM_NAME")
+    response = cloudwatch.describe_alarms(AlarmNames=[alarm_name])
+    alarms = response["MetricAlarms"]
 
-    stressed_instances = []
-    for instance_id in instance_ids:
-        response = cloud_watch.get_metric_statistics(
-            Namespace="AWS/EC2",
-            MetricName="CPUUtilization",
-            Dimensions=[{"Name": "InstanceId", "Value": instance_id}],
-            StartTime=datetime.now() - timedelta(minutes=5),
-            EndTime=datetime.now(),
-            Period=60,
-            Statistics=["Average"],
-        )
+    if not alarms:
+        print("No alarms found with the specified name.")
+        return
 
-        if any(dp["Average"] > 80 for dp in response.get("Datapoints", [])):
-            stressed_instances.append(instance_id)
+    alarm_state = alarms[0]["StateValue"]
 
-        if not stressed_instances:
-            print("No CPU stress issues detected.")
-            return
-
-        for instance_id in stressed_instances:
-            create_github_issue(instance_id)
+    if alarm_state == "ALARM":
+        instance_id = alarms[0]["Dimensions"][0][
+            "Value"
+        ]  # Assuming the alarm is set on a single EC2 instance
+        create_github_issue(instance_id)
+    else:
+        print("No CPU stress issues detected.")
 
 
 def create_github_issue(instance_id):
@@ -44,7 +33,7 @@ def create_github_issue(instance_id):
     url = f"https://api.github.com/repos/{repo}/issues"
     headers = {"Authorization": f"token {token}"}
     issue_title = f"EC2 Instance {instance_id} CPU Stress Detected"
-    issue_body = f"The EC2 instance {instance_id} experienced high CPU utilization in the past 15 minutes. Remediation action is required."
+    issue_body = f"The CloudWatch alarm for EC2 instance {instance_id} is in the ALARM state, indicating high CPU utilization. Remediation action is required."
     issue = {"title": issue_title, "body": issue_body}
     response = requests.post(url, headers=headers, json=issue)
     if response.status_code == 201:
