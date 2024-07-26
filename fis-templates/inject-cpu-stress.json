@@ -21,7 +21,9 @@
       },
       "targets": {
         "Instances": "TargetInstances"
-      }
+      },
+      "startAfter": [],
+      "duration": "PT10M"
     }
   },
   "stopConditions": [
