@@ -1,0 +1,33 @@
+{
+  "description": "Experiment to inject network latency on Windows EC2 instances",
+  "targets": {
+    "TargetInstances": {
+      "resourceType": "aws:ec2:instance",
+      "selectionMode": "ALL",
+      "resourceArns": [
+        "arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:instance/${INSTANCE_ID}"
+      ]
+    }
+  },
+  "actions": {
+    "InjectNetworkLatency": {
+      "actionId": "aws:ssm:send-command",
+      "description": "Inject network latency on target EC2 instances",
+      "parameters": {
+        "documentVersion": "$LATEST",
+        "duration": "PT20M",
+        "documentArn": "arn:aws:ssm:${AWS_REGION}::document/AWS-RunPowerShellScript",
+        "documentParameters": "{\"commands\":[\"New-NetQosPolicy -Name 'LatencyPolicy' -PolicyStore ActiveStore -NetworkProfile All -Default -ThrottleRateActionBitsPerSecond 100000\"]}"
+      },
+      "targets": {
+        "Instances": "TargetInstances"
+      }
+    }
+  },
+  "stopConditions": [
+    {
+      "source": "none"
+    }
+  ],
+  "roleArn": "arn:aws:iam::${AWS_ACCOUNT_ID}:role/${IAM_ROLE}"
+}
