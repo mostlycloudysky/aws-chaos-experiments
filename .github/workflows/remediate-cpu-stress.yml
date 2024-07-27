@@ -1,4 +1,4 @@
-name: Remediate Issue
+name: Remediate CPU stress
 
 on:
   issues:
