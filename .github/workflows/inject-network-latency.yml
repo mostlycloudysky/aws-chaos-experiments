@@ -53,7 +53,7 @@ jobs:
               -e "s/\${IAM_ROLE}/${{ secrets.IAM_ROLE }}/g" \
               fis-templates/inject-network-latency.json > fis-templates/inject-network-latency-processed.json
 
-      - name: Create FIS Experiment Template for Inject CPU Stress
+      - name: Create FIS Experiment Template for Inject Network Latency
         if: steps.get_template_id.outputs.template_id == 'new'
         run: |
           TEMPLATE_ID=$(aws fis create-experiment-template --cli-input-json file://fis-templates/inject-network-latency-processed.json --query 'experimentTemplate.id' --output text)
@@ -70,7 +70,7 @@ jobs:
           aws fis start-experiment --experiment-template-id $TEMPLATE_ID
           sleep 900 # Wait for 15 minutes to let the experiment complete
 
-      - name: Detect Issues
+      - name: Detect Network Latency Issues
         run: python scripts/detect_network_latency_issues.py
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
