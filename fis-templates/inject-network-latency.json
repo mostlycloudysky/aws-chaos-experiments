@@ -17,7 +17,7 @@
         "documentVersion": "$LATEST",
         "duration": "PT20M",
         "documentArn": "arn:aws:ssm:${AWS_REGION}::document/AWS-RunPowerShellScript",
-        "documentParameters": "{\"commands\":[\"New-NetQosPolicy -Name 'LatencyPolicy' -PolicyStore ActiveStore -NetworkProfile All -Default -ThrottleRateActionBitsPerSecond 100000\"]}"
+        "documentParameters": "{\"commands\":[\"New-NetQosPolicy -Name 'LatencyPolicy' -PolicyStore ActiveStore -NetworkProfile All -Default -ThrottleRateActionBitsPerSecond 50000\"]}"
       },
       "targets": {
         "Instances": "TargetInstances"
