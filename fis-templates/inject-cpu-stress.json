@@ -3,6 +3,7 @@
   "targets": {
     "TargetInstances": {
       "resourceType": "aws:ec2:instance",
+      "selectionMode": "ALL",
       "resourceArns": [
         "arn:aws:ec2:${AWS_REGION}:${AWS_ACCOUNT_ID}:instance/${INSTANCE_ID}"
       ]
@@ -13,11 +14,10 @@
       "actionId": "aws:ssm:send-command",
       "description": "Inject CPU stress on target EC2 instances",
       "parameters": {
-        "documentName": "AWS-RunShellScript",
         "documentVersion": "$LATEST",
-        "parameters": {
-          "commands": ["stress --cpu 8 --timeout 600"]
-        }
+        "duration": "PT20M",
+        "documentArn": "arn:aws:ssm:${AWS_REGION}::document/AWS-RunPowerShellScript",
+         "documentParameters": "{\"commands\":[\"for ($i=0; $i -lt 8; $i++) {Start-Job -ScriptBlock {while ($true) {}}}\", \"Start-Sleep -Seconds 600\", \"Get-Job | Stop-Job\"]}"
       },
       "targets": {
         "Instances": "TargetInstances"
