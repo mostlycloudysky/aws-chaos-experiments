@@ -8,7 +8,7 @@ permissions:
   issues: write
 
 jobs:
-  inject-cpu-stress:
+  inject-network-latency:
     runs-on: ubuntu-latest
 
     steps:
