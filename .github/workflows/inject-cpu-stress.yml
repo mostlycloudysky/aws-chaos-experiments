@@ -3,6 +3,10 @@ name: Inject CPU Stress Experiment
 on:
   workflow_dispatch: # Allows manual triggering
 
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   inject-cpu-stress:
     runs-on: ubuntu-latest
