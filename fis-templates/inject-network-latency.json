@@ -1,5 +1,5 @@
 {
-  "description": "Experiment to inject network latency on Windows EC2 instances",
+  "description": "Experiment to inject network latency on Windows EC2 instance",
   "targets": {
     "TargetInstances": {
       "resourceType": "aws:ec2:instance",
