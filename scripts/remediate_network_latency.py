@@ -2,16 +2,19 @@ import os
 import boto3
 import requests
 import re
+import base64
 
 
 def run_ssm_document(instance_id):
     ssm = boto3.client("ssm", region_name=os.getenv("AWS_REGION"))
+    script = "echo Hello"
+    encoded_script = base64.b64encode(script.encode("utf-8")).decode("utf-8")
     response = ssm.start_automation_execution(
         DocumentName="AWSSupport-StartEC2RescueWorkflow",
         Parameters={
             "InstanceId": [instance_id],
             "AllowEncryptedVolume": ["True"],
-            "OfflineScript": ["echo Hello"],
+            "OfflineScript": [encoded_script],
         },
     )
     execution_id = response["AutomationExecutionId"]
