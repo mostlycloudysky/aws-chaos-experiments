@@ -30,7 +30,7 @@ aws cloudwatch put-metric-alarm --alarm-name NetworkOutAlarm --alarm-description
 
 ## AWS Fault Injection Simulator (FIS) Experiements
 
-1. CPU Stress
+### CPU Stress
 
 Refer the following FIS template to simulate stress on `EC2 Windows Instances`.
  - [Inject CPU Stress](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/fis-templates/inject-cpu-stress.json)
