@@ -17,7 +17,7 @@
         "documentVersion": "$LATEST",
         "duration": "PT20M",
         "documentArn": "arn:aws:ssm:${AWS_REGION}::document/AWS-RunPowerShellScript",
-        "documentParameters": "{\"commands\":[\"netsh interface portproxy add v4tov4 listenport=8080 listenaddress=0.0.0.0 connectport=8080 connectaddress=127.0.0.1\", \"netsh interface portproxy set v4tov4 listenport=8080 listenaddress=0.0.0.0 connectport=8080 connectaddress=127.0.0.1 delay=500\", \"Write-Output 'Introduced 500ms network latency using netsh.'\"]}"
+        "documentParameters": "{\"commands\":[\"netsh interface portproxy add v4tov4 listenport=8080 listenaddress=0.0.0.0 connectport=8080 connectaddress=127.0.0.1\", \"netsh interface portproxy set v4tov4 listenport=8080 listenaddress=0.0.0.0 connectport=8080 connectaddress=127.0.0.1 delay=1000\", \"Write-Output 'Introduced 1000ms network latency using netsh.'\"]}"
       },
       "targets": {
         "Instances": "TargetInstances"
