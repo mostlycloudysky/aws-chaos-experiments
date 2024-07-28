@@ -36,10 +36,17 @@ aws cloudwatch put-metric-alarm --alarm-name NetworkOutAlarm --alarm-description
 
 ### 💻 CPU Stress
 
-Refer the following FIS template to simulate stress on `EC2 Windows Instances`.
+Refer the following FIS template to simulate `CPU stress` on `EC2 Windows Instances`.
  - [Inject CPU Stress](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/fis-templates/inject-cpu-stress.json)
  - [Actions workflow to Inject CPU Stress](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/.github/workflows/inject-cpu-stress.yml)
  - [Detect CPU Stress Script](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/scripts/detect_cpu_stress_issues.py)
  - [Remediate CPU Stress Script](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/scripts/remediate_cpu_stress_issue.py)
  - [Actions Workflow Remediate CPU Stress](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/.github/workflows/remediate-cpu-stress.yml)
  
+### 🌐 Network Latency
+Refer to the following FIS template to simulate `network latency` on `EC2 Windows Instances`.
+ - [Inject Network Latency](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/fis-templates/inject-network-latency.json)
+ - [Actions workflow to Inject Network Latency](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/.github/workflows/inject-network-latency.yml)
+ - [Detect Network Latency Script](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/scripts/detect_network_latency_issues.py)
+ - [Remediate Network Latency Script](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/scripts/remediate_network_latency.py)
+ - [Actions Workflow Remediate Network Latency](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/.github/workflows/remediate-network-latency.yml)
