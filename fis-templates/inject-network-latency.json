@@ -17,7 +17,7 @@
         "documentVersion": "$LATEST",
         "duration": "PT20M",
         "documentArn": "arn:aws:ssm:${AWS_REGION}::document/AWS-RunPowerShellScript",
-        "documentParameters": "{\"commands\":[\"New-NetQosPolicy -Name 'LatencyPolicy' -PolicyStore ActiveStore -NetworkProfile All -Default -ThrottleRateActionBitsPerSecond 50000\"]}"
+        "documentParameters": "{\"commands\":[\"netsh interface portproxy add v4tov4 listenport=8080 listenaddress=0.0.0.0 connectport=8080 connectaddress=127.0.0.1\", \"netsh interface portproxy set v4tov4 listenport=8080 listenaddress=0.0.0.0 connectport=8080 connectaddress=127.0.0.1 delay=100\", \"Write-Output 'Introduced 100ms network latency using netsh.'\"]}"
       },
       "targets": {
         "Instances": "TargetInstances"
