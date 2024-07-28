@@ -50,3 +50,13 @@ Refer to the following FIS template to simulate `network latency` on `EC2 Window
  - [Detect Network Latency Script](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/scripts/detect_network_latency_issues.py)
  - [Remediate Network Latency Script](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/scripts/remediate_network_latency.py)
  - [Actions Workflow Remediate Network Latency](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/.github/workflows/remediate-network-latency.yml)
+
+
+### 🛑 Stop EC2 Instances
+Refer to the following FIS template to `stop EC2 Windows Instances`.
+
+ - [Stop EC2 Instances with FIS](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/fis-templates/stop-instance-template.json)
+ - [Actions workflow to Stop EC2 Instances](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/.github/workflows/stop-instances.yml)
+ - [Detect Stopped Instances Script](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/scripts/detect_issues.py)
+ - [Remediate Stopped Instances Script](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/scripts/remediate_stopped_instances.py)
+ - [Actions Workflow Remediate Stopped Instances](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/.github/workflows/remediate-stop-instances.yml)
