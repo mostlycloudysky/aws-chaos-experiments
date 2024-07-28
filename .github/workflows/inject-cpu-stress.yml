@@ -68,7 +68,7 @@ jobs:
           fi
           echo "Starting FIS experiment with TEMPLATE_ID: $TEMPLATE_ID"
           aws fis start-experiment --experiment-template-id $TEMPLATE_ID
-          sleep 900 # Wait for 15 minutes to let the experiment complete
+          sleep 1200 # Wait for 20 minutes to let the experiment complete
 
       - name: Detect Issues
         run: python scripts/detect_cpu_stress_issues.py
