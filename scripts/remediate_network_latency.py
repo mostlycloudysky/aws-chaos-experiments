@@ -8,7 +8,11 @@ def run_ssm_document(instance_id):
     ssm = boto3.client("ssm", region_name=os.getenv("AWS_REGION"))
     response = ssm.start_automation_execution(
         DocumentName="AWSSupport-StartEC2RescueWorkflow",
-        Parameters={"InstanceId": [instance_id], "AllowEncryptedVolume": ["True"]},
+        Parameters={
+            "InstanceId": [instance_id],
+            "AllowEncryptedVolume": ["True"],
+            "OfflineScript": ["echo Hello"],
+        },
     )
     execution_id = response["AutomationExecutionId"]
     print(f"Started SSM document on instance {instance_id}: {execution_id}")
