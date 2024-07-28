@@ -1,7 +1,7 @@
 # AWS-CHAOS-EXPERIMENTS
 
 ![Python Version](https://img.shields.io/badge/python-3.9%2B-blue)
-![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/mostlycloudysky/aws-chaos-experiments)
+![GitHub Issues](https://img.shields.io/github/issues/mostlycloudysky/aws-chaos-experiments)
 
 
 This repository demonstrates chaos engineering practices on AWS EC2 Windows instances using AWS Fault Injection Simulator (FIS), Systems Manager and GitHub Actions Workflow. It includes scenarios for CPU stress, network latency, and stopping EC2 instances. The workflows automate detection and remediation of issues using AWS Systems Manager (SSM).
