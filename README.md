@@ -1,6 +1,10 @@
 # AWS-CHAOS-EXPERIMENTS
 
-This repository demonstrates chaos engineering practices using AWS Fault Injection Simulator (FIS), Systems Manager and GitHub Actions Workflow. It includes scenarios for CPU stress, network latency, and stopping EC2 instances. The workflows automate detection and remediation of issues using AWS Systems Manager (SSM).
+This repository demonstrates chaos engineering practices on AWS EC2 Windows instances using AWS Fault Injection Simulator (FIS), Systems Manager and GitHub Actions Workflow. It includes scenarios for CPU stress, network latency, and stopping EC2 instances. The workflows automate detection and remediation of issues using AWS Systems Manager (SSM).
+
+> ### Disclaimer ⚠️
+> Please note that running these experiments will incur costs on your AWS account. Ensure you monitor your usage and understand the potential charges associated with using AWS services such as EC2, FIS, and CloudWatch.
+
 
 ## Prerequisites
 
@@ -30,7 +34,7 @@ aws cloudwatch put-metric-alarm --alarm-name NetworkOutAlarm --alarm-description
 
 ## AWS Fault Injection Simulator (FIS) Experiements
 
-### CPU Stress
+### 💻 CPU Stress
 
 Refer the following FIS template to simulate stress on `EC2 Windows Instances`.
  - [Inject CPU Stress](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/fis-templates/inject-cpu-stress.json)
