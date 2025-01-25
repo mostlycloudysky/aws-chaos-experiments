@@ -53,7 +53,53 @@ Refer to the following FIS template to simulate `network latency` on `EC2 Window
  - [Actions workflow to Inject Network Latency](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/.github/workflows/inject-network-latency.yml)
  - [Detect Network Latency Script](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/scripts/detect_network_latency_issues.py)
  - [Remediate Network Latency Script](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/scripts/remediate_network_latency.py)
- - [Actions Workflow Remediate Network Latency](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/.github/workflows/remediate-network-latency.yml)
+ - [Actions Workflow Remediate Network Latency](https://github.com/mostlycloudysky/aws-chaos-experiments/blob/master/.github/workflows/remediate-network-latency.{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kms:Decrypt",
+                "kms:DescribeKey",
+                "kms:Encrypt",
+                "kms:GenerateDataKey*"
+            ],
+            "Principal": {
+                "Service": "secretsmanager.amazonaws.com"
+            },
+            "Resource": "arn:aws:kms:us-east-1:000000000000:key/YOUR_KEY_ID",
+            "Condition": {
+                "StringEquals": {
+                    "kms:ViaService": "secretsmanager.us-east-1.amazonaws.com",
+                    "aws:SourceAccount": "000000000000"
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kms:Decrypt",
+                "kms:DescribeKey"
+            ],
+            "Principal": {
+                "Service": "ses.amazonaws.com"
+            },
+            "Resource": "arn:aws:kms:us-east-1:000000000000:key/YOUR_KEY_ID",
+            "Condition": {
+                "StringEquals": {
+                    "kms:ViaService": "email.us-east-1.amazonaws.com",
+                    "aws:SourceAccount": "000000000000"
+                },
+                "ArnLike": {
+                    "aws:SourceArn": "arn:aws:ses:us-east-1:000000000000:identity/*"
+                }
+            }
+        }
+    ]
+}
+
+
+
 
 
 ### 🛑 Stop EC2 Instances
